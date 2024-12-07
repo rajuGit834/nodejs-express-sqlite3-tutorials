@@ -2,19 +2,19 @@ module.exports = (app) => {
   const tutorial = require("../controller/tutorial.controller.js");
   const router = require("express").Router();
 
-  router.post("/", tutorial.createTutorial);
-
-  router.get("/", tutorial.getAllTutorial);
+  router
+    .route("/")
+    .get(tutorial.getAllTutorial)
+    .post(tutorial.createTutorial)
+    .delete(tutorial.removeAllTutorial);
 
   router.get("/published", tutorial.getPublishedTut);
 
-  router.get("/:id", tutorial.getOneTutorial);
-
-  router.put("/:id", tutorial.updateTutorial);
-
-  router.delete("/:id", tutorial.removeOneTutorial);
-
-  router.delete("/", tutorial.removeAllTutorial);
+  router
+    .route("/:id")
+    .get(tutorial.getOneTutorial)
+    .put(tutorial.updateTutorial)
+    .delete(tutorial.removeOneTutorial);
 
   app.use("/api/tutorial", router);
 

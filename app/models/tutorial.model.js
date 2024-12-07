@@ -61,7 +61,7 @@ Tutorial.updateById = (id, newTutorial, result) => {
 
   sqlite3.run(
     updateQuery,
-    [newTutorial.title, newTutorial.description, newTutorial.published],
+    [newTutorial.title, newTutorial.description, newTutorial.published, id],
     (error) => {
       if (error) {
         return result(error, null);

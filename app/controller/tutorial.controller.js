@@ -18,7 +18,7 @@ exports.createTutorial = (req, res) => {
 exports.getOneTutorial = (req, res) => {
   const id = Number(req.params.id);
   if (id < 0) {
-    res.status(404).send({ message: "Id Should be positive" });
+    res.status(400).send({ message: "Id Should be positive" });
   }
   Tutorial.findById(id, (error, row) => {
     if (error) {
@@ -43,7 +43,7 @@ exports.getAllTutorial = (req, res) => {
         error: error.message,
       });
     } else if (!rows.length) {
-      return res.status(400).send({ message: "Tutorial is Empty" });
+      return res.status(404).send({ message: "Tutorial is Empty" });
     }
     return res.send(rows);
   });
@@ -58,7 +58,7 @@ exports.getPublishedTut = (req, res) => {
       });
     } else if (!rows.length) {
       return res
-        .status(400)
+        .status(404)
         .send({ message: "No any Tutorial is Published yet!" });
     }
     return res.send(rows);
@@ -71,7 +71,7 @@ exports.updateTutorial = (req, res) => {
     res.status(400).send({ message: "Id Should be positive" });
   }
   if (!req.body) {
-    return res.status(400).send({ message: "Body can not be empty!" });
+    return res.status(404).send({ message: "Body can not be empty!" });
   }
   const tutorial = new Tutorial(req.body);
   Tutorial.updateById(id, tutorial, (error, updatedTutorial) => {
@@ -96,7 +96,7 @@ exports.removeOneTutorial = (req, res) => {
   Tutorial.removeById(id, (error, deletedTutorial) => {
     if (error) {
       if (error.kind === "not_found") {
-        return res.status(400).send({ error: "Invalid Id" });
+        return res.status(404).send({ error: "Id Not Found" });
       }
       return res.status(500).send({
         message: "Something went wrong",
